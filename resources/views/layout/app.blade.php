@@ -16,11 +16,10 @@
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a href="/">
-            <img src="{{ asset('images/BUMDES-Sidowayah.png') }}" alt="BUMDES Sidowayah" width="150">
-        </a>
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('home') }}">BUMDES Sidowayah</a>
+            <a href="{{ route('home') }}">
+                <img src="{{ asset('images/BUMDES-Sidowayah.png') }}" alt="BUMDES Sidowayah" width="150">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -37,7 +36,7 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('news.index') }}">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}">Profil Desa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('struktur') }}">Profil Desa</a></li>
                     @if(Auth::check())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">{{ Auth::user()->name }}</a>
@@ -71,34 +70,14 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white mt-5">
-        <div class="container py-4">
-            <div class="row">
-                <!-- Logo Section -->
-                <div class="col-md-4 mb-3">
-                    <div class="footer-logo">
-                        <img src="{{ asset('images/BUMDES-Sidowayah.png') }}" alt="Logo BUMDES" width="100">
-                    </div>
-                </div>
-                <!-- Links Section -->
-                <div class="col-md-4 mb-3">
-                    <h4>Tautan</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Disclaimer</a></li>
-                    </ul>
-                </div>
-                <!-- Social Media Section -->
-                <div class="col-md-4 mb-3">
-                    <h4>Sosial Media</h4>
-                    <div class="footer-social-icons">
-                        <a href="https://instagram.com" target="_blank" class="text-white"><i class="fab fa-instagram me-2"></i>Instagram</a><br>
-                        <a href="https://facebook.com" target="_blank" class="text-white"><i class="fab fa-facebook me-2"></i>Facebook</a><br>
-                        <a href="https://twitter.com" target="_blank" class="text-white"><i class="fab fa-twitter me-2"></i>Twitter</a><br>
-                        <a href="https://linkedin.com" target="_blank" class="text-white"><i class="fab fa-linkedin me-2"></i>LinkedIn</a>
-                    </div>
-                </div>
+        <div class="container text-center py-4">
+            <h4>Temukan Kami di</h4>
+            <div class="footer-social-icons">
+                <a href="https://wa.me/6281234567890" target="_blank" class="text-white mx-3"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="https://instagram.com/bumdessidowayah" target="_blank" class="text-white mx-3"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="https://tiktok.com/@bumdessidowayah" target="_blank" class="text-white mx-3"><i class="fab fa-tiktok"></i> TikTok</a>
             </div>
+            <p class="mt-3">&copy; 2024 BUMDES Sidowayah. All rights reserved.</p>
         </div>
     </footer>
 

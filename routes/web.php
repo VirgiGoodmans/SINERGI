@@ -19,11 +19,14 @@ Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallbac
 Route::get('/register', fn() => view('auth.register'))->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// Halaman profile (hanya untuk user login)
+// Halaman profil user (hanya untuk user login)
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', fn() => view('profile'))->name('profile');
+    Route::get('/profile', fn() => view('profile'))->name('profile'); // Profil user
 });
 
+// Halaman profil desa
+// Halaman profil desa
+Route::get('/profil-desa', fn() => view('struktur'))->name('profil-desa');
 // Halaman beranda
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
