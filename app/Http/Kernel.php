@@ -8,11 +8,9 @@ class Kernel extends HttpKernel
 {
     /**
      * Daftar middleware global.
-     *
      * Middleware ini berjalan pada setiap permintaan aplikasi.
      */
     protected $middleware = [
-        // Middleware bawaan Laravel
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
@@ -43,6 +41,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'role' => \App\Http\Middleware\RoleMiddleware::class, // Daftar RoleMiddleware di sini
+        'role' => \App\Http\Middleware\RoleMiddleware::class, // RoleMiddleware sudah ditambahkan
     ];
 }

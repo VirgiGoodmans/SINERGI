@@ -19,23 +19,18 @@ Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallbac
 Route::get('/register', fn() => view('auth.register'))->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// Halaman profil user (hanya untuk user login)
+// Halaman profil user
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', fn() => view('profile'))->name('profile'); // Profil user
+    Route::get('/profile', fn() => view('profile'))->name('profile');
 });
 
 // Halaman profil desa
-// Halaman profil desa
-Route::get('/profil-desa', fn() => view('struktur'))->name('profil-desa');
+Route::get('/struktur', function () {
+    return view('struktur');
+})->name('struktur');
+
 // Halaman beranda
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-// Rute pemesanan
-Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
-Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
-
-// Rute news
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
 // Grup middleware khusus admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -50,21 +45,30 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/pemesanan/check', [AdminController::class, 'checkResi'])->name('admin.pemesanan.check');
 });
 
+// Rute pemesanan umum
+Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
+Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
+Route::get('/pemesanan/create', [PemesananController::class, 'create'])->name('pemesanan.create');
+
+// Rute pemesanan per wisata
+Route::prefix('pemesanan')->group(function () {
+    Route::get('/siblarak', [PemesananController::class, 'formSiblarak'])->name('pemesanan.siblarak');
+    Route::post('/siblarak', [PemesananController::class, 'storeSiblarak']);
+
+    Route::get('/kemanten', [PemesananController::class, 'formKemanten'])->name('pemesanan.kemanten');
+    Route::post('/kemanten', [PemesananController::class, 'storeKemanten']);
+
+    Route::get('/kampung-dolanan', [PemesananController::class, 'formKampungDolanan'])->name('pemesanan.kampung-dolanan');
+    Route::post('/kampung-dolanan', [PemesananController::class, 'storeKampungDolanan']);
+});
+
 // Rute untuk halaman wisata
 Route::prefix('wisata')->group(function () {
-    // Wisata Siblarak
     Route::get('/siblarak', [WisataController::class, 'showSiblarak'])->name('wisata.siblarak');
-    Route::post('/siblarak/pemesanan', [WisataController::class, 'storeSiblarak'])->name('wisata.siblarak.pemesanan');
-
-    // Wisata Kemanten
     Route::get('/kemanten', [WisataController::class, 'showKemanten'])->name('wisata.kemanten');
-    Route::post('/kemanten/pemesanan', [WisataController::class, 'storeKemanten'])->name('wisata.kemanten.pemesanan');
-
-    // Wisata Kampung Dolanan
     Route::get('/kampung-dolanan', [WisataController::class, 'showKampungDolanan'])->name('wisata.kampung-dolanan');
-    Route::post('/kampung-dolanan/pemesanan', [WisataController::class, 'storeKampungDolanan'])->name('wisata.kampung-dolanan.pemesanan');
-
-    // UMKM Lokal
     Route::get('/umkm-lokal', [WisataController::class, 'showUmkmLokal'])->name('wisata.umkm-lokal');
-    Route::post('/umkm-lokal/pemesanan', [WisataController::class, 'storeUmkmLokal'])->name('wisata.umkm-lokal.pemesanan');
 });
+
+// Rute news
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
