@@ -2,8 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    HomeController, AdminController, NewsController, WisataController,
-    PemesananController, AuthController, FasilitasSiblarakController
+    HomeController,
+    AdminController,
+    NewsController,
+    WisataController,
+    PemesananController,
+    AuthController,
+    FasilitasSiblarakController
 };
 
 // Rute login dan autentikasi
@@ -19,9 +24,9 @@ Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallbac
 Route::get('/register', fn() => view('auth.register'))->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// Halaman profil user
+// Halaman profil user (hanya untuk user login)
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', fn() => view('profile'))->name('profile');
+    Route::get('/profile', fn() => view('profile'))->name('profile'); // Profil user
 });
 
 // Halaman profil desa
@@ -32,12 +37,12 @@ Route::get('/struktur', function () {
 // Halaman beranda
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Rute news
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+
 // Grup middleware khusus admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    // Dashboard admin
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
-    // Manajemen fasilitas Siblarak
     Route::resource('/admin/fasilitas-siblarak', FasilitasSiblarakController::class);
 
     // Konfirmasi pemesanan dan cek resi
@@ -45,30 +50,34 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/pemesanan/check', [AdminController::class, 'checkResi'])->name('admin.pemesanan.check');
 });
 
-// Rute pemesanan umum
-Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
-Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
-Route::get('/pemesanan/create', [PemesananController::class, 'create'])->name('pemesanan.create');
-
-// Rute pemesanan per wisata
+// Grup rute pemesanan per wisata
 Route::prefix('pemesanan')->group(function () {
     Route::get('/siblarak', [PemesananController::class, 'formSiblarak'])->name('pemesanan.siblarak');
-    Route::post('/siblarak', [PemesananController::class, 'storeSiblarak']);
+    Route::post('/siblarak', [PemesananController::class, 'storeSiblarak'])->name('pemesanan.siblarak.store');
 
     Route::get('/kemanten', [PemesananController::class, 'formKemanten'])->name('pemesanan.kemanten');
-    Route::post('/kemanten', [PemesananController::class, 'storeKemanten']);
+    Route::post('/kemanten', [PemesananController::class, 'storeKemanten'])->name('pemesanan.kemanten.store');
 
     Route::get('/kampung-dolanan', [PemesananController::class, 'formKampungDolanan'])->name('pemesanan.kampung-dolanan');
-    Route::post('/kampung-dolanan', [PemesananController::class, 'storeKampungDolanan']);
+    Route::post('/kampung-dolanan', [PemesananController::class, 'storeKampungDolanan'])->name('pemesanan.kampung-dolanan.store');
 });
 
 // Rute untuk halaman wisata
 Route::prefix('wisata')->group(function () {
+    // Halaman wisata Siblarak
     Route::get('/siblarak', [WisataController::class, 'showSiblarak'])->name('wisata.siblarak');
+
+    // Halaman wisata Kemanten
     Route::get('/kemanten', [WisataController::class, 'showKemanten'])->name('wisata.kemanten');
+
+    // Halaman wisata Kampung Dolanan
     Route::get('/kampung-dolanan', [WisataController::class, 'showKampungDolanan'])->name('wisata.kampung-dolanan');
+
+    // Halaman UMKM Lokal
     Route::get('/umkm-lokal', [WisataController::class, 'showUmkmLokal'])->name('wisata.umkm-lokal');
 });
 
-// Rute news
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+// Rute default pemesanan
+Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
+Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
+
